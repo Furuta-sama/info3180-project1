@@ -13,7 +13,7 @@ class PropertyProfile(db.Model):
     property_type = db.Column(db.String(255))
     filename = db.Column(db.String(255))
 
-    def __init__(self, title, description,nobed, nobath, location, price, property_type, filename):
+    def __init__(self, title, description, nobed, nobath, location, price, property_type, filename):
         self.title = title
         self.description = description
         self.nobed = nobed

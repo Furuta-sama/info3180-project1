@@ -8,6 +8,7 @@ import os
 from app import app, db
 from flask import render_template, request, redirect, url_for, flash, session, abort
 from flask import send_from_directory
+from werkzeug.utils import secure_filename
 from app.forms import PropertyForm
 from app.models import PropertyProfile
 
@@ -27,7 +28,7 @@ def about():
     """Render the website's about page."""
     return render_template('about.html', name="Mary Jane")
 
-@app.route('/property/')
+@app.route('/property/', methods=['POST', 'GET'])
 def property():
     """Render the website's property page."""
     form = PropertyForm()
@@ -39,14 +40,27 @@ def property():
         location = form.location.data
         price = form.price.data
         property_type = form.property_type.data
-        filename = form.filename.data
+        photo = form.photo.data
 
-        prop = PropertyProfile(title,desc,nobed,nobed,location,price,property_type,filename)
+        filename = secure_filename(photo.filename)
+        photo.save(os.path.join(
+            app.config['UPLOAD_FOLDER'], filename
+        ))
+
+        prop = PropertyProfile(title,desc,nobed,nobath,location,price,property_type,filename)
         db.session.add(prop)
         db.session.commit()
+        
         flash('Property successfully added.', 'success')
         return redirect(url_for('properties'))
+    else:
+        flash_errors(form)
     return render_template('property.html', form=form)
+
+@app.route("/property/<path:filename>")
+def get_prop(filename):
+    root_dir = os.getcwd()
+    return send_from_directory(os.path.join(root_dir, app.config['UPLOAD_FOLDER']), filename)
 
 @app.route('/properties/')
 def properties():
