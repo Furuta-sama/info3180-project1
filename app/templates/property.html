@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block main %}
+</br>
+<h1 class="page-header">Add New Property</h1>
+
+{% include 'flash_messages.html' %}
+{# Add the appropriate method and enctype attributes to the form tag to allow for file uploads #}
+<form action="{{ url_for('property') }}" method="post" enctype="multipart/form-data">
+
+  {# Add the file upload field as you learnt for Flask-WTF #}
+  	{% include 'flash_messages.html' %}
+    {{ form.csrf_token }}
+    <div class="form-group">
+        {{ form.title.label }}
+        {{ form.title(class="form-control") }}
+    </div>
+    <div class="form-group">
+        {{ form.description.label }}
+        {{ form.description(class="form-control") }}
+    </div>
+    <div class="form-group">
+        {{ form.nobed.label }}
+        {{ form.nobed(class="form-control") }}
+    </div>
+    <div class="form-group">
+        {{ form.nobath.label }}
+        {{ form.nobath(class="form-control") }}
+    </div>
+    <div class="form-group">
+        {{ form.location.label }}
+        {{ form.location(class="form-control") }}
+    </div>
+    <div class="form-group">
+        {{ form.price.label }}
+        {{ form.price(class="form-control") }}
+    </div>
+    <div class="form-group">
+        {{ form.property_type.label }}
+        {{ form.property_type(class="form-control") }}
+    </div>
+    <div class="form-group">
+        {{ form.photo.label }}
+        {{ form.photo(class="form-control") }}
+    </div>
+
+  <button type="submit" name="submit" class="btn btn-primary">Add Property</button>
+</form>
+{% endblock %}
