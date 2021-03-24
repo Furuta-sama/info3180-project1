@@ -2,10 +2,15 @@
 
 {% block main %}
 <div class="grid"> 
+</br>
+    <h2>Properties</h2>
     <ul>
-    {% for item in items %}
+    {% for property in properties %}
         <li> 
-            <img src="{{ url_for('get_prop', filename=item) }}"/>
+            <img src="{{ url_for('get_image', filename=property.filename) }}"/>
+            <p> {{ property.title }} </br>
+                {{ property.location }} </br>
+                ${{ property.price }} </p>
         </li>
     {% endfor %}
     </ul>

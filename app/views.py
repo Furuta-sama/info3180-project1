@@ -57,21 +57,21 @@ def property():
         flash_errors(form)
     return render_template('property.html', form=form)
 
-@app.route("/property/<path:filename>")
-def get_prop(filename):
-    root_dir = os.getcwd()
-    return send_from_directory(os.path.join(root_dir, app.config['UPLOAD_FOLDER']), filename)
+@app.route("/property/<path:propertyID>")
+def get_property(propertyID):
+    property = PropertyProfile.query.filter_by(id=propertyID).first()
+    return render_template("property_view.html",property=property)
 
 @app.route('/properties/')
 def properties():
     """Render the website's properties page."""
-    lst = get_properties()
-    return render_template('properties.html',items=lst)
+    properties = PropertyProfile.query.all()
+    return render_template('properties.html',properties=properties)
 
-@app.route('/property/<path:propertyid>')
-def get_property(propertyid):
+@app.route('/uploads/<path:filename>')
+def get_image(filename):
     root_dir = os.getcwd()
-    return send_from_directory(os.path.join(root_dir, app.config['CONFIG_FOLDER']))
+    return send_from_directory(os.path.join(root_dir, app.config['UPLOAD_FOLDER']), filename)
 
 ###
 # The functions below should be applicable to all Flask apps.
